@@ -1,0 +1,30 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t abubaker/docker-react -f ./client/Dockerfile.dev ./client
+  # -t abubaker/docker-react will add image id and run the docker file   use can also use -t myimage(anything...abubaker/docker-react not compulsary its just a name)
+
+#tell travis how to run test scripts
+script:
+  - docker run -e CI=true abubaker/docker-react npm run test
+
+after_success:
+  - docker build -t abubaker/multi-client ./client
+  - docker build -t abubaker/multi-nginx ./nginx
+  - docker build -t abubaker/multi-server ./server
+  - docker build -t abubaker/multi-worker ./worker
+# deploy:
+#   provider: elasticbeanstalk
+#   region: 'us-east-1'
+#   app: 'docker-react'
+#   env: 'dockerreact-env'
+#   bucket_name: 'elasticbeanstalk-us-east-1-958537364043'
+#   bucket_path: 'docker-react'
+#   on:
+#     branch: master
+#   access_key_id: "$AWS_ACCESS_KEY"
+#   secret_access_Key: "$AWS_SECRET_KEY"
