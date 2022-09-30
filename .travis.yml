@@ -5,26 +5,24 @@ services:
   - docker
 
 before_install:
-  - docker build -t abubaker/docker-react -f ./client/Dockerfile.dev ./client
-  # -t abubaker/docker-react will add image id and run the docker file   use can also use -t myimage(anything...abubaker/docker-react not compulsary its just a name)
+  - docker build -t abubaker/docker-react -f -f ./client/Dockerfile.dev ./client
 
-#tell travis how to run test scripts
 script:
-  - docker run -e CI=true abubaker/docker-react npm run test
+  - docker run -e CI=true abubaker/docker-react npm test
 
 after_success:
   - docker build -t abubaker/multi-client ./client
   - docker build -t abubaker/multi-nginx ./nginx
   - docker build -t abubaker/multi-server ./server
   - docker build -t abubaker/multi-worker ./worker
-  #login to docker CLI
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-  #Take those images and push them to docker hub
+  # Take those images and push them to docker hub
   - docker push abubaker/multi-client
   - docker push abubaker/multi-nginx
   - docker push abubaker/multi-server
   - docker push abubaker/multi-worker
+
 # deploy:
 #   provider: elasticbeanstalk
 #   region: 'us-east-1'
