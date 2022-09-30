@@ -1,11 +1,11 @@
 version: "3"
 services:
   client:
-    image: "abubakerms/complex-client"
+    image: "abubakerms/complex-client:latest"
     mem_limit: 128m
     hostname: client
   server:
-    image: "abubakerms/complex-server"
+    image: "abubakerms/complex-server:latest"
     mem_limit: 128m
     hostname: api
     environment:
@@ -17,14 +17,14 @@ services:
       - PGPASSWORD=$PGPASSWORD
       - PGPORT=$PGPORT
   worker:
-    image: "abubakerms/complex-worker"
+    image: "abubakerms/complex-worker:latest"
     mem_limit: 128m
     hostname: worker
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
   nginx:
-    image: "abubakerms/complex-nginx"
+    image: "abubakerms/complex-nginx:latest"
     mem_limit: 128m
     hostname: nginx
     ports:
