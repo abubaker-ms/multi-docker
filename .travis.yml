@@ -5,7 +5,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t abubaker/docker-react -f -f ./client/Dockerfile.dev ./client
+  - docker build -t abubaker/docker-react -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true abubaker/docker-react npm test
