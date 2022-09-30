@@ -11,26 +11,26 @@ script:
   - docker run -e CI=true abubaker/docker-react npm test
 
 after_success:
-  - docker build -t abubaker/multi-client ./client
-  - docker build -t abubaker/multi-nginx ./nginx
-  - docker build -t abubaker/multi-server ./server
-  - docker build -t abubaker/multi-worker ./worker
+  - docker build -t abubaker/complex-client ./client
+  - docker build -t abubaker/complex-nginx ./nginx
+  - docker build -t abubaker/complex-server ./server
+  - docker build -t abubaker/complex-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push abubaker/multi-client
-  - docker push abubaker/multi-nginx
-  - docker push abubaker/multi-server
-  - docker push abubaker/multi-worker
+  - docker push abubaker/complex-client
+  - docker push abubaker/complex-nginx
+  - docker push abubaker/complex-server
+  - docker push abubaker/complex-worker
 
-# deploy:
-#   provider: elasticbeanstalk
-#   region: 'us-east-1'
-#   app: 'docker-react'
-#   env: 'dockerreact-env'
-#   bucket_name: 'elasticbeanstalk-us-east-1-958537364043'
-#   bucket_path: 'docker-react'
-#   on:
-#     branch: master
-#   access_key_id: "$AWS_ACCESS_KEY"
-#   secret_access_Key: "$AWS_SECRET_KEY"
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker-multi'
+  on:
+    branch: main
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
